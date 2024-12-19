@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],  # 모든 HTTP 헤더 허용
 )
 
-SERIAL_PORT = "/dev/tty.usbmodem2101" 
+SERIAL_PORT = "/dev/tty.usbmodem101" 
 BAUD_RATE = 9600
 
 try:

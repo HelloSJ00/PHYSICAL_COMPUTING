@@ -87,15 +87,17 @@ const Loading: React.FC = () => {
       )}
       {!isLoading && measurementStep === 1 && (
         <>
-          <h1>왼발 측정 완료</h1>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleMeasureRightFoot}
-            style={{ fontSize: "16px", padding: "10px 20px" }}
-          >
-            오른발 측정하기
-          </Button>
+          <div className="flex flex-col items-center gap-4">
+            <h1>왼발 측정 완료</h1>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleMeasureRightFoot}
+              style={{ fontSize: "16px", padding: "10px 20px" }}
+            >
+              오른발 측정하기
+            </Button>
+          </div>
         </>
       )}
       {measurementStep === 2 && (
