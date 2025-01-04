@@ -15,6 +15,7 @@
 ## Project Diagram
 
 <div align="center">
+  <img src="./assets/6.png" alt="Project Diagram">
   <img src="./assets/3.png" alt="Project Diagram">
   <img src="./assets/4.png" alt="Project Diagram">
   <img src="./assets/5.png" alt="Project Diagram">
