@@ -3,6 +3,7 @@ import time
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+import serial.tools.list_ports
 
 app = FastAPI()
 
@@ -15,16 +16,34 @@ app.add_middleware(
     allow_headers=["*"],  # 모든 HTTP 헤더 허용
 )
 
-SERIAL_PORT = "/dev/tty.usbmodem101" 
+# 글로벌 시리얼 포트 변수
+SERIAL_PORT = None
 BAUD_RATE = 9600
 
+def find_serial_port():
+    """
+    아두이노와 연결된 시리얼 포트를 자동 탐색합니다.
+    """
+    ports = serial.tools.list_ports.comports()
+    for port in ports:
+        if "Arduino" in port.description or "usbmodem" in port.device or "usbserial" in port.device:
+            return port.device
+    return None
+
 try:
-    print("Connecting to serial port...")
+    print("Finding serial port...")
+    SERIAL_PORT = find_serial_port()
+    if SERIAL_PORT is None:
+        raise HTTPException(status_code=500, detail="Arduino serial port not found.")
+    print(f"Serial port found: {SERIAL_PORT}")
     arduino = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
     time.sleep(2)
     print("Serial connection established.")
-except serial.SerialException:
-    raise HTTPException(status_code=500, detail="Serial port connection failed.")
+except serial.SerialException as e:
+    raise HTTPException(status_code=500, detail=f"Serial port connection failed: {str(e)}")
+except HTTPException as e:
+    print(e.detail)
+    raise
 
 class Measurement(BaseModel):
     width: float
